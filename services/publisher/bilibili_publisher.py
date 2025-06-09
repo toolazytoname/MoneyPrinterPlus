@@ -76,7 +76,7 @@ def bilibili_publisher(driver, video_file, text_file):
         title.send_keys(title_text)
     time.sleep(2)
     
-    #分区
+    # 分区
     section =  st.session_state.get('video_publish_enable_bilibili_section')
     if section:
         print("设置分区")
@@ -85,18 +85,18 @@ def bilibili_publisher(driver, video_file, text_file):
         actions = ActionChains(driver)
         actions.move_to_element(section_tag).click().perform()
         time.sleep(3)
-        section_level1 = st.session_state.get('video_publish_bilibili_section_level1')
-        section_level1_tag = driver.find_element(By.XPATH, f'//p[@class="f-item-content" and text()="{section_level1}"]')
+        section_level2 = st.session_state.get('video_publish_bilibili_section_level2')
+        section_level2_tag = driver.find_element(By.XPATH, f'//p[@class="item-cont-main" and text()="{section_level2}"]')
         
         actions = ActionChains(driver)
-        actions.move_to_element(section_level1_tag).click().perform()
+        actions.move_to_element(section_level2_tag).click().perform()
         time.sleep(2)
 
-        section_level2 = st.session_state.get('video_publish_bilibili_section_level2')
-        section_level2_tag = driver.find_element(By.XPATH, f'//p[@class="item-main" and text()="{section_level2}"]')
-        actions = ActionChains(driver)
-        actions.move_to_element(section_level2_tag).click().perform()
-        time.sleep(1)
+        # section_level2 = st.session_state.get('video_publish_bilibili_section_level2')
+        # section_level2_tag = driver.find_element(By.XPATH, f'//p[@class="item-main" and text()="{section_level2}"]')
+        # actions = ActionChains(driver)
+        # actions.move_to_element(section_level2_tag).click().perform()
+        # time.sleep(1)
     
     # 设置tags
     tags_content = driver.find_element(By.XPATH, '//input[@placeholder="按回车键Enter创建标签"]')
@@ -124,7 +124,8 @@ def bilibili_publisher(driver, video_file, text_file):
         if not is_firefox:
             print("tag:", tag)
             tags_content.send_keys(' ')
-            tags_content.send_keys(tag)
+            tag_without_jing = tag.replace('#', '')
+            tags_content.send_keys(tag_without_jing)
             time.sleep(2)
             tags_content.send_keys(Keys.ENTER)
             time.sleep(1)
@@ -141,7 +142,7 @@ def bilibili_publisher(driver, video_file, text_file):
         i = i + 1    
 
     # 设置内容
-    content = driver.find_element(By.XPATH, '//*[@id="video-up-app"]/div[2]/div[1]/div[2]/div[7]/div/div[2]/div/div[1]/div[1]')
+    content = driver.find_element(By.XPATH, '//div[@data-placeholder="填写更全面的相关信息，让更多的人能找到你的视频吧"]')
     content.click()
     time.sleep(2)
     cmd_ctrl = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
