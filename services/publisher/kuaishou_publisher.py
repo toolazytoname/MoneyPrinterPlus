@@ -56,7 +56,7 @@ def kuaishou_publisher(driver, video_file, text_file):
     file_input.send_keys(video_file)
     time.sleep(10)  # 等待
     # 等待视频上传完毕
-    wait.until(EC.presence_of_element_located((By.XPATH, '//div[contains(@placeholder, "添加合适的话题和描述")]')))
+    wait.until(EC.presence_of_element_located((By.XPATH, '//div[contains(@placeholder, "作品描述不会写？试试")]')))
 
     # 设置标题
     use_common = st.session_state.get('video_publish_use_common_config')
@@ -66,7 +66,7 @@ def kuaishou_publisher(driver, video_file, text_file):
         common_title = st.session_state.get('video_publish_kuaishou_title_prefix')
 
     # 设置内容
-    content = driver.find_element(By.XPATH, '//div[contains(@placeholder, "添加合适的话题和描述")]')
+    content = driver.find_element(By.XPATH, '//div[contains(@placeholder, "作品描述不会写？试试")]')
     content.click()
     time.sleep(2)
     cmd_ctrl = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
@@ -149,7 +149,7 @@ def kuaishou_publisher(driver, video_file, text_file):
     time.sleep(2)
     
     # 发布 
-    publish_button = driver.find_element(By.CLASS_NAME, '_button-primary_si04s_60')
+    publish_button = driver.find_element(By.XPATH, '//div[text()="发布"]')
     auto_publish = st.session_state.get('video_publish_auto_publish')
     if auto_publish:
         print("auto publish")

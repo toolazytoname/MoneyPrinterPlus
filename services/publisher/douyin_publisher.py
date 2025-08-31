@@ -128,7 +128,7 @@ def douyin_publisher(driver, video_file, text_file):
         time.sleep(1)
 
     # 设置是否允许他人保存视频
-    not_allow_save_label = driver.find_element(By.XPATH, '//*[@id="root"]/div/div/div[1]/div[11]/div/label[2]') 
+    not_allow_save_label = driver.find_element(By.XPATH, '//label[.//span[text()="不允许"]]')
     not_allow_save_label.click()   
     time.sleep(2)
     # 发布 
