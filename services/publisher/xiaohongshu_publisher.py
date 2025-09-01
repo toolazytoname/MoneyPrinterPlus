@@ -21,7 +21,7 @@
 #
 #
 
-from selenium.webdriver import Keys
+from selenium.webdriver import Keys, ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -68,7 +68,7 @@ def xiaohongshu_publisher(driver, video_file, text_file):
     time.sleep(2)
 
     # 设置内容
-    content = driver.find_element(By.XPATH, '//*[@id="quillEditor"]/div')
+    content = driver.find_element(By.XPATH, '//p[contains(@data-placeholder, "输入正文描述")]')
     content_text = read_file_start_with_secondline(text_file)
     content.send_keys(content_text)
     time.sleep(2)
@@ -87,6 +87,39 @@ def xiaohongshu_publisher(driver, video_file, text_file):
         content.send_keys(' ')
         time.sleep(2)
 
+    # 声明原创
+    original_tag = driver.find_element(By.XPATH, '//span[@class="btn-text red" and contains(text(), "去声明")]')
+    original_tag.click()    
+    time.sleep(2)
+    
+    checkbox = driver.find_element(By.XPATH, '//span[contains(@class, "d-checkbox-simulator") and contains(@class, "unchecked")]')
+    checkbox.click()
+    time.sleep(1)
+    
+    button = driver.find_element(By.XPATH, '//span[contains(@class, "d-text") and normalize-space(.)="声明原创"]')
+    button.click()
+    time.sleep(2)
+    
+    # 内容类型声明
+    content_type = driver.find_element(By.XPATH, '//*[contains(text(), "添加内容类型声明")]')
+    actions = ActionChains(driver)
+    actions.move_to_element(content_type).click().perform()
+    time.sleep(2)
+    
+    
+    # content_original_tag = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//span[contains(.,"内容来源声明")]')))
+    content_original_tag = driver.find_element(By.XPATH, '//span[contains(.,"内容来源声明")]')
+    actions = ActionChains(driver)
+    actions.move_to_element(content_original_tag).click().perform()
+    
+    shoot_declare_tag = driver.find_element(By.XPATH, '//span[contains(.,"自主拍摄")]')
+    actions = ActionChains(driver)
+    actions.move_to_element(shoot_declare_tag).click().perform()
+    time.sleep(1)
+    
+    cancel_button = driver.find_element(By.XPATH, '//button[contains(., "取消")]')
+    cancel_button.click()
+    time.sleep(2)
 
     # 发布
     publish_button = driver.find_element(By.XPATH, '//button[contains(@class, "publishBtn")]')
